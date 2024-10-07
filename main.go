@@ -34,13 +34,19 @@ type server struct {
 var (
 	address     = flag.String("address", "0.0.0.0", "Bind IP Address")
 	port        = flag.String("port", "8080", "Listen Port")
-	waDebug     = flag.String("wadebug", "", "Enable whatsmeow debug (INFO or DEBUG)")
+	waDebug     = flag.String("wadebug", "true", "Enable whatsmeow debug (INFO or DEBUG)")
 	logType     = flag.String("logtype", "console", "Type of log output (console or json)")
 	colorOutput = flag.Bool("color", false, "Enable colored output for console logs")
 	sslcert     = flag.String("sslcertificate", "", "SSL Certificate File")
 	sslprivkey  = flag.String("sslprivatekey", "", "SSL Certificate Private Key File")
 	adminToken  = flag.String("admintoken", "", "Security Token to authorize admin actions (list/create/remove users)")
 	container   *sqlstore.Container
+	dbUser      = flag.String("db_user", "postgres", "USER DATABASE")
+	dbPassword  = flag.String("db_password", "123456", "DATABASE PASSWORD")
+	dbName      = flag.String("db_name", "meow", "DATABASE")
+	dbHost      = flag.String("db_host", "localhost", "HOST DATABASE")
+	dbPort      = flag.String("db_port", "5432", "DATABASE PORT")
+	//runMigration = flag.Bool("migration", false, "RUN MIGRATION TABLE IN DATABASE")
 
 	killchannel   = make(map[int](chan bool))
 	userinfocache = cache.New(5*time.Minute, 10*time.Minute)
@@ -96,14 +102,15 @@ func main() {
 	exPath := filepath.Dir(ex)
 
 	// Obtendo informações do banco de dados a partir das variáveis de ambiente
-	dbUser := os.Getenv("DB_USER")
-	dbPassword := os.Getenv("DB_PASSWORD")
-	dbName := os.Getenv("DB_NAME")
-	dbHost := os.Getenv("DB_HOST")
-	dbPort := os.Getenv("DB_PORT")
+	// dbUser := os.Getenv("DB_USER")
+	// dbPassword := os.Getenv("DB_PASSWORD")
+	// dbName := os.Getenv("DB_NAME")
+	// dbHost := os.Getenv("DB_HOST")
+	// dbPort := os.Getenv("DB_PORT")
 
 	// String de conexão para PostgreSQL
-	dsn := fmt.Sprintf("user=%s password=%s dbname=%s host=%s port=%s sslmode=disable", dbUser, dbPassword, dbName, dbHost, dbPort)
+	dsn := fmt.Sprintf("host=" + *dbHost + " port=" + *dbPort + " user=" + *dbUser + " password=" + *dbPassword + " dbname=" + *dbName + " sslmode=disable")
+	//dsn := fmt.Sprintf("postgres://%s:%s@%s/%s?sslmode=disable", dbUser, dbPassword, dbHost, dbName)
 
 	// Conectando ao banco de dados PostgreSQL usando SQLX
 	db, err := sqlx.Open("postgres", dsn)
@@ -113,7 +120,7 @@ func main() {
 	}
 	defer db.Close()
 
-	// Verificando se a conexão foi estabelecida corretamente
+	//Verificando se a conexão foi estabelecida corretamente
 	err = db.Ping()
 	if err != nil {
 		log.Fatal().Err(err).Msg("Não foi possível verificar a conexão com o banco de dados")
@@ -144,8 +151,8 @@ func main() {
 	s.connectOnStartup()
 
 	srv := &http.Server{
-		Addr:    *address + ":" + *port,
-		Handler: s.router,
+		Addr:              *address + ":" + *port,
+		Handler:           s.router,
 		ReadHeaderTimeout: 20 * time.Second,
 		ReadTimeout:       60 * time.Second,
 		WriteTimeout:      120 * time.Second,
