@@ -101,16 +101,8 @@ func main() {
 	}
 	exPath := filepath.Dir(ex)
 
-	// Obtendo informações do banco de dados a partir das variáveis de ambiente
-	// dbUser := os.Getenv("DB_USER")
-	// dbPassword := os.Getenv("DB_PASSWORD")
-	// dbName := os.Getenv("DB_NAME")
-	// dbHost := os.Getenv("DB_HOST")
-	// dbPort := os.Getenv("DB_PORT")
-
 	// String de conexão para PostgreSQL
 	dsn := fmt.Sprintf("host=" + *dbHost + " port=" + *dbPort + " user=" + *dbUser + " password=" + *dbPassword + " dbname=" + *dbName + " sslmode=disable")
-	//dsn := fmt.Sprintf("postgres://%s:%s@%s/%s?sslmode=disable", dbUser, dbPassword, dbHost, dbName)
 
 	// Conectando ao banco de dados PostgreSQL usando SQLX
 	db, err := sqlx.Open("postgres", dsn)

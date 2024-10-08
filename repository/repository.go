@@ -20,7 +20,7 @@ func NewPostgresRepository(db *sqlx.DB) *PostgresRepository {
 // Implementação de exemplo que consulta todos os registros da tabela users
 func (r *PostgresRepository) GetAllUsers() ([]User, error) {
 	var users []User
-	query := "SELECT * FROM users"
+	query := "SELECT * FROM whatsmeow_users"
 	err := r.db.Select(&users, query)
 	if err != nil {
 		log.Printf("Erro ao buscar usuários: %v", err)

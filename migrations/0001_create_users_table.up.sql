@@ -1,5 +1,5 @@
 -- migrations/0001_create_users_table.up.sql
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS whatsmeow_users (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     token TEXT NOT NULL,
