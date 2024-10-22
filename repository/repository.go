@@ -20,7 +20,7 @@ func NewPostgresRepository(db *sqlx.DB) *PostgresRepository {
 // Implementação de exemplo que consulta todos os registros da tabela users
 func (r *PostgresRepository) GetAllUsers() ([]User, error) {
 	var users []User
-	query := "SELECT * FROM whatsmeow_users"
+	query := "SELECT * FROM whatsapp"
 	err := r.db.Select(&users, query)
 	if err != nil {
 		log.Printf("Erro ao buscar usuários: %v", err)
@@ -31,13 +31,14 @@ func (r *PostgresRepository) GetAllUsers() ([]User, error) {
 
 // User representa a estrutura de dados de um usuário
 type User struct {
-	ID         int    `db:"id"`
-	Name       string `db:"name"`
-	Token      string `db:"token"`
-	Webhook    string `db:"webhook"`
-	Jid        string `db:"jid"`
-	Qrcode     string `db:"qrcode"`
-	Connected  int    `db:"connected"`
-	Expiration int    `db:"expiration"`
-	Events     string `db:"events"`
+	ID             int    `db:"id"`
+	Name           string `db:"name"`
+	Token          string `db:"token"`
+	Webhook        string `db:"webhook"`
+	Statustelefone string `db:"statustelefone"`
+	Jid            string `db:"jid"`
+	Qrcode         string `db:"qrcode"`
+	Connected      int    `db:"connected"`
+	Expiration     int    `db:"expiration"`
+	Events         string `db:"events"`
 }

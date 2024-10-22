@@ -33,7 +33,7 @@ type server struct {
 
 var (
 	address     = flag.String("address", "0.0.0.0", "Bind IP Address")
-	port        = flag.String("port", "8080", "Listen Port")
+	port        = flag.String("port", "7003", "Listen Port")
 	waDebug     = flag.String("wadebug", "true", "Enable whatsmeow debug (INFO or DEBUG)")
 	logType     = flag.String("logtype", "console", "Type of log output (console or json)")
 	colorOutput = flag.Bool("color", false, "Enable colored output for console logs")
@@ -43,7 +43,7 @@ var (
 	container   *sqlstore.Container
 	dbUser      = flag.String("db_user", "postgres", "USER DATABASE")
 	dbPassword  = flag.String("db_password", "123456", "DATABASE PASSWORD")
-	dbName      = flag.String("db_name", "meow", "DATABASE")
+	dbName      = flag.String("db_name", "lptqualis", "DATABASE")
 	dbHost      = flag.String("db_host", "localhost", "HOST DATABASE")
 	dbPort      = flag.String("db_port", "5432", "DATABASE PORT")
 	//runMigration = flag.Bool("migration", false, "RUN MIGRATION TABLE IN DATABASE")
